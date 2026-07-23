@@ -12,13 +12,14 @@ import com.example.shopnas.ui.screens.home.HomeScreen
 import com.example.shopnas.ui.screens.onboarding.OnboardingScreen1
 import com.example.shopnas.ui.screens.onboarding.OnboardingScreen2
 import com.example.shopnas.ui.screens.onboarding.OnboardingScreen3
+import com.example.shopnas.ui.screens.splash.SplashScreen
 
 
 @Composable
 fun AppNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
-    startDestination: String = ROUT_HOME
+    startDestination: String = ROUT_SPLASH
 ) {
 
     NavHost(
@@ -49,6 +50,11 @@ fun AppNavHost(
         composable(ROUT_ONBOARDING3) {
             OnboardingScreen3(navController)
         }
+
+        composable(ROUT_SPLASH) {
+            SplashScreen(navController)
+        }
+
 
     }
 }
