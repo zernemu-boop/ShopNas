@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.shopnas.ui.screens.auth.LoginScreen
 import com.example.shopnas.ui.screens.auth.RegisterScreen
+import com.example.shopnas.ui.screens.dashboard.DashboardScreen
 import com.example.shopnas.ui.screens.home.HomeScreen
 import com.example.shopnas.ui.screens.onboarding.OnboardingScreen1
 import com.example.shopnas.ui.screens.onboarding.OnboardingScreen2
@@ -54,6 +55,11 @@ fun AppNavHost(
         composable(ROUT_SPLASH) {
             SplashScreen(navController)
         }
+
+        composable(ROUT_DASHBOARD) {
+            DashboardScreen(navController)
+        }
+
 
 
     }

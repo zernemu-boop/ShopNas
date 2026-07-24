@@ -1,4 +1,4 @@
-package com.example.shopnas.ui.screens.home
+package com.example.shopnas.ui.screens.dashboard
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,26 +19,26 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(navController: NavController){
+fun DashboardScreen(navController: NavController){
 
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
 
-        //  Start of TopAppBar
+        ///Start of TopAppBar
+
         TopAppBar(
-            title = { Text(text = "Home") },
-            navigationIcon = { 
-                
+            title = { Text(text = "Customer Dashboard") },
+            navigationIcon = {
+
                 IconButton(onClick = {}) {
                     Icon(
                         imageVector = Icons.Default.Menu,
                         contentDescription = "Menu"
-                )
-            }
+                    )
+                }
             },
             actions = {
                 IconButton(onClick = {}) {
@@ -67,8 +67,7 @@ fun HomeScreen(navController: NavController){
 
 
         )
-
-        //END OF TopAppBar
+        ///End of TopAppBar
 
 
     }
@@ -77,8 +76,8 @@ fun HomeScreen(navController: NavController){
 
 @Preview(showBackground = true)
 @Composable
-fun HomeScreenPreview(){
+fun DashboardScreenPreview(){
 
-    HomeScreen(rememberNavController())
+    DashboardScreen(rememberNavController())
 
 }
