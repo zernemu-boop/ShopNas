@@ -1,0 +1,7 @@
+- [x] Redesign `IntentScreen.kt`
+    - [x] Create `IntentActionCard` helper component
+    - [x] Implement `Scaffold` with `MediumTopAppBar`
+    - [x] Implement `LazyVerticalGrid` for actions
+    - [x] Replace hardcoded colors with theme colors
+- [x] Verify UI with Compose Preview
+- [x] Create Walkthrough

@@ -1,25 +1,28 @@
 package com.example.shopnas.ui.screens.onboarding
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -32,61 +35,64 @@ import com.example.shopnas.navigation.ROUT_ONBOARDING2
 
 @Composable
 fun OnboardingScreen1(navController: NavController){
-
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-
-        //Contents of column fall here, always put commas when styling
-
-        Image(
-           painter = painterResource(R.drawable.cart),
-            contentDescription = "cart",
-            modifier = Modifier.size(100.dp)
-
-        )
-
-        Spacer(modifier = Modifier.height(10.dp))
-
-        Text(
-            text = "ShopNova!",
-            fontSize = 40.sp,
-            fontWeight = FontWeight.Bold,
-            color = Color.Magenta,
-        )
-
-        Text(
-            text = "Shop Smart. Live Better",
-            fontSize = 20.sp,
-        )
-
-        Text(
-            text = "Improves customer retention and drives higher conversion rates.#1 Online Store in Kenya ✓ Buy Phones, Laptops, Appliances, Clothes, TVs & Home Essentials from Top Brands ✓ Best Prices in Kenya",
-            textAlign = TextAlign.Center
-        )
-
-        Button(
-            onClick = {navController.navigate(ROUT_ONBOARDING2) },
-            colors = ButtonDefaults.buttonColors(Color.Magenta),
-            shape = RoundedCornerShape(10.dp),
-            modifier = Modifier.width(250.dp)
-        ) {
-            Text(
-                text = "Get Started!!"
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(
+                Brush.verticalGradient(
+                    listOf(Color.White, MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.4f))
+                )
             )
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Image(
+                painter = painterResource(R.drawable.cart),
+                contentDescription = "cart",
+                modifier = Modifier.size(220.dp)
+            )
+
+            Spacer(modifier = Modifier.height(40.dp))
+
+            Text(
+                text = "Welcome to ShopNas",
+                style = MaterialTheme.typography.displaySmall,
+                fontWeight = FontWeight.ExtraBold,
+                color = MaterialTheme.colorScheme.primary,
+                textAlign = TextAlign.Center
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Text(
+                text = "Discover 10,000+ authentic brands at your fingertips. From local gems to global giants.",
+                style = MaterialTheme.typography.bodyLarge,
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
+                lineHeight = 24.sp
+            )
+
+            Spacer(modifier = Modifier.height(48.dp))
+
+            Button(
+                onClick = { navController.navigate(ROUT_ONBOARDING2) },
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
+                shape = RoundedCornerShape(16.dp),
+                modifier = Modifier.fillMaxWidth().height(56.dp)
+            ) {
+                Text(text = "Start Exploring", style = MaterialTheme.typography.titleMedium)
+            }
         }
-
-
     }
-
 }
 
 @Preview(showBackground = true)
 @Composable
 fun OnboardingScreen1Preview(){
-
     OnboardingScreen1(rememberNavController())
-
 }

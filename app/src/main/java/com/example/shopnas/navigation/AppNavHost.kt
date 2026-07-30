@@ -10,9 +10,11 @@ import com.example.shopnas.ui.screens.auth.LoginScreen
 import com.example.shopnas.ui.screens.auth.RegisterScreen
 import com.example.shopnas.ui.screens.dashboard.DashboardScreen
 import com.example.shopnas.ui.screens.home.HomeScreen
+import com.example.shopnas.ui.screens.intent.IntentScreen
 import com.example.shopnas.ui.screens.onboarding.OnboardingScreen1
 import com.example.shopnas.ui.screens.onboarding.OnboardingScreen2
 import com.example.shopnas.ui.screens.onboarding.OnboardingScreen3
+import com.example.shopnas.ui.screens.scaffold.ScaffoldScreen
 import com.example.shopnas.ui.screens.splash.SplashScreen
 
 
@@ -58,6 +60,14 @@ fun AppNavHost(
 
         composable(ROUT_DASHBOARD) {
             DashboardScreen(navController)
+        }
+
+        composable(ROUT_INTENT) {
+            IntentScreen(navController)
+        }
+
+        composable(ROUT_SCAFFOLD) {
+            ScaffoldScreen(navController)
         }
 
 
