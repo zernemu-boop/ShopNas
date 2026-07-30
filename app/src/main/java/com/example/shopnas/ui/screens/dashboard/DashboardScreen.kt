@@ -27,6 +27,8 @@ import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -54,6 +56,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.shopnas.R
+import com.example.shopnas.ui.theme.LightSecondary
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -108,6 +111,15 @@ fun DashboardScreen(navController: NavController){
             }
 
             Spacer(modifier = Modifier.height(24.dp))
+
+            Button(
+                onClick = { },
+                colors = ButtonDefaults.buttonColors(containerColor = LightSecondary),
+                shape = RoundedCornerShape(16.dp),
+                modifier = Modifier.width(200.dp).height(56.dp)
+            ) {
+                Text(text = "Register", style = MaterialTheme.typography.titleMedium)
+            }
         }
     }
 }
@@ -151,12 +163,12 @@ fun ProfileHeaderSection() {
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = "Glory Akinyi",
+            text = "Zerlina Musavi",
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold
         )
         Text(
-            text = "glory@shopnas.com",
+            text = "zerlina@shopnas.com",
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
@@ -233,6 +245,8 @@ fun ActivityItem(icon: ImageVector, title: String, subtitle: String) {
             )
         }
     }
+
+
 }
 
 @Preview(showBackground = true)
