@@ -14,11 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -42,7 +38,6 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -64,7 +59,9 @@ import com.example.shopnas.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(navController: NavController){
+   //Scaffold
     Scaffold(
+        //topappbar
         topBar = {
             TopAppBar(
                 title = { Text(text = "ShopNas", fontWeight = FontWeight.Bold) },
@@ -94,25 +91,20 @@ fun HomeScreen(navController: NavController){
                 .padding(padding)
                 .verticalScroll(rememberScrollState())
         ) {
-            // Search Bar
             SearchBarSection()
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Categories
             CategoriesSection()
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Promotional Banner
             PromoBanner()
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Trending Section
             SectionHeader(title = "Trending Products")
             
-            // Using a simple column of rows for products to fit in vertical scroll
             TrendingGrid()
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -134,7 +126,8 @@ fun SearchBarSection() {
         leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
         colors = OutlinedTextFieldDefaults.colors(
             focusedBorderColor = MaterialTheme.colorScheme.primary,
-            unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant
+            unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant,
+            focusedLeadingIconColor = MaterialTheme.colorScheme.primary
         ),
         singleLine = true
     )
@@ -143,11 +136,11 @@ fun SearchBarSection() {
 @Composable
 fun CategoriesSection() {
     val categories = listOf(
-        "Electronics" to Color(0xFFE0F7FA),
-        "Fashion" to Color(0xFFF3E5F5),
-        "Home" to Color(0xFFE3F2FD),
-        "Beauty" to Color(0xFFFFF3E0),
-        "Sports" to Color(0xFFF1F8E9)
+        "Electronics" to MaterialTheme.colorScheme.primaryContainer,
+        "Fashion" to MaterialTheme.colorScheme.secondaryContainer,
+        "Home" to MaterialTheme.colorScheme.tertiaryContainer,
+        "Beauty" to MaterialTheme.colorScheme.surfaceVariant,
+        "Sports" to MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f)
     )
 
     Column {
@@ -174,7 +167,7 @@ fun CategoryChip(name: String, bgColor: Color) {
             text = name,
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
             style = MaterialTheme.typography.labelLarge,
-            color = Color.Black.copy(alpha = 0.7f)
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
 }
@@ -184,18 +177,19 @@ fun PromoBanner() {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .height(150.dp)
+            .height(180.dp)
             .padding(horizontal = 16.dp),
-        shape = RoundedCornerShape(20.dp),
-        elevation = CardDefaults.cardElevation(4.dp)
+        shape = RoundedCornerShape(28.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
     ) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .background(
-                    Brush.horizontalGradient(
+                    Brush.linearGradient(
                         colors = listOf(
                             MaterialTheme.colorScheme.primary,
+                            MaterialTheme.colorScheme.secondary,
                             MaterialTheme.colorScheme.tertiary
                         )
                     )
@@ -203,19 +197,20 @@ fun PromoBanner() {
         ) {
             Column(
                 modifier = Modifier
-                    .padding(20.dp)
+                    .padding(28.dp)
                     .align(Alignment.CenterStart)
             ) {
                 Text(
                     text = "Mega Sale",
-                    color = Color.Black,
-                    style = MaterialTheme.typography.headlineMedium,
-                    fontWeight = FontWeight.Bold
+                    color = Color.White,
+                    style = MaterialTheme.typography.displaySmall,
+                    fontWeight = FontWeight.ExtraBold
                 )
                 Text(
-                    text = "Up to 50% OFF",
-                    color = Color.Black.copy(alpha = 0.8f),
-                    style = MaterialTheme.typography.titleMedium
+                    text = "Up to 70% OFF on Top Brands",
+                    color = Color.White.copy(alpha = 0.9f),
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Medium
                 )
             }
         }
@@ -234,12 +229,14 @@ fun SectionHeader(title: String) {
         Text(
             text = title,
             style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.ExtraBold
+            fontWeight = FontWeight.ExtraBold,
+            color = MaterialTheme.colorScheme.onBackground
         )
         Text(
             text = "See All",
             style = MaterialTheme.typography.labelLarge,
-            color = MaterialTheme.colorScheme.primary
+            color = MaterialTheme.colorScheme.primary,
+            fontWeight = FontWeight.Bold
         )
     }
 }
@@ -274,9 +271,9 @@ data class Product(val name: String, val price: String, val imageRes: Int, val r
 fun ProductCard(product: Product, modifier: Modifier = Modifier) {
     Card(
         modifier = modifier,
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(24.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        elevation = CardDefaults.cardElevation(2.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp)
     ) {
         Column {
             Box {
@@ -285,31 +282,34 @@ fun ProductCard(product: Product, modifier: Modifier = Modifier) {
                     contentDescription = null,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(140.dp),
+                        .height(160.dp)
+                        .clip(RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)),
                     contentScale = ContentScale.Crop
                 )
                 IconButton(
                     onClick = {},
                     modifier = Modifier
                         .align(Alignment.TopEnd)
-                        .padding(8.dp)
-                        .size(32.dp)
-                        .background(Color.White.copy(alpha = 0.5f), CircleShape)
+                        .padding(12.dp)
+                        .size(36.dp)
+                        .background(Color.White.copy(alpha = 0.6f), CircleShape)
                 ) {
                     Icon(
                         Icons.Default.FavoriteBorder,
                         contentDescription = null,
-                        modifier = Modifier.size(18.dp),
+                        modifier = Modifier.size(20.dp),
                         tint = MaterialTheme.colorScheme.secondary
                     )
                 }
             }
             
-            Column(modifier = Modifier.padding(12.dp)) {
+            Column(modifier = Modifier.padding(16.dp)) {
                 Text(
                     text = product.name,
-                    style = MaterialTheme.typography.titleSmall,
-                    maxLines = 1
+                    style = MaterialTheme.typography.titleMedium,
+                    maxLines = 1,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurface
                 )
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -318,21 +318,22 @@ fun ProductCard(product: Product, modifier: Modifier = Modifier) {
                 ) {
                     Text(
                         text = product.price,
-                        style = MaterialTheme.typography.titleMedium,
+                        style = MaterialTheme.typography.titleLarge,
                         color = MaterialTheme.colorScheme.primary,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.ExtraBold
                     )
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(
                             Icons.Default.Star,
                             contentDescription = null,
                             tint = Color(0xFFFFB300),
-                            modifier = Modifier.size(14.dp)
+                            modifier = Modifier.size(16.dp)
                         )
                         Text(
                             text = product.rating.toString(),
-                            style = MaterialTheme.typography.labelSmall,
-                            modifier = Modifier.padding(start = 2.dp)
+                            style = MaterialTheme.typography.labelMedium,
+                            modifier = Modifier.padding(start = 2.dp),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                 }

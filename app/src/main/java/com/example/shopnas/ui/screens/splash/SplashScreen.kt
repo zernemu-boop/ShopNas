@@ -47,7 +47,7 @@ fun SplashScreen(navController: NavController){
     ) {
 
         Image(
-            painter = painterResource(R.drawable.splash),
+            painter = painterResource(R.drawable.cart),
             contentDescription = "splash",
             modifier = Modifier.size(180.dp)
         )
@@ -60,6 +60,15 @@ fun SplashScreen(navController: NavController){
             color = MaterialTheme.colorScheme.onPrimary,
             fontWeight = FontWeight.ExtraBold,
             letterSpacing = 2.sp
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Text(
+            text = "Shop Smart. Live Better.",
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f),
+            fontWeight = FontWeight.Medium
         )
     }
 

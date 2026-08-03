@@ -3,7 +3,9 @@ package com.example.shopnas.ui.screens.intent
 import android.content.Intent
 import android.net.Uri
 import android.provider.MediaStore
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -42,14 +44,18 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.shopnas.navigation.ROUT_SCAFFOLD
 import com.example.shopnas.ui.theme.ShopNasTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -57,7 +63,10 @@ import com.example.shopnas.ui.theme.ShopNasTheme
 fun IntentScreen(navController: NavController) {
     val mContext = LocalContext.current
 
+    //Intent Action
     val actions = listOf(
+
+        //M-pesa
         IntentAction(
             title = "Pay via M-Pesa",
             description = "Quick and secure mobile payment",
@@ -69,11 +78,13 @@ fun IntentScreen(navController: NavController) {
                 simToolKitLaunchIntent?.let { mContext.startActivity(it) }
             }
         ),
+
+        //WhatsApp
         IntentAction(
             title = "WhatsApp Support",
             description = "Instant chat with our team",
             icon = Icons.AutoMirrored.Filled.Message,
-            color = androidx.compose.ui.graphics.Color(0xFF25D366),
+            color = Color(0xFF25D366),
             onClick = {
                 val url = "https://api.whatsapp.com/send?phone=254741522720"
                 val i = Intent(Intent.ACTION_VIEW)
@@ -81,6 +92,8 @@ fun IntentScreen(navController: NavController) {
                 mContext.startActivity(i)
             }
         ),
+
+        //Location
         IntentAction(
             title = "Track My Order",
             description = "See live delivery status on Map",
@@ -92,6 +105,8 @@ fun IntentScreen(navController: NavController) {
                 mContext.startActivity(mapIntent)
             }
         ),
+
+        //Email
         IntentAction(
             title = "Email Support",
             description = "For detailed inquiries & returns",
@@ -105,6 +120,8 @@ fun IntentScreen(navController: NavController) {
                 mContext.startActivity(shareIntent)
             }
         ),
+
+        //Call
         IntentAction(
             title = "Call Hotline",
             description = "24/7 Toll-free assistance",
@@ -116,6 +133,8 @@ fun IntentScreen(navController: NavController) {
                 mContext.startActivity(callIntent)
             }
         ),
+
+        //Sharing
         IntentAction(
             title = "Share ShopNas",
             description = "Invite friends & earn credits",
@@ -129,49 +148,65 @@ fun IntentScreen(navController: NavController) {
             }
         )
     )
+    //End of IntentAction
 
     //Scaffold
     Scaffold(
         topBar = {
             MediumTopAppBar(
-                title = { Text("Customer Center") },
+                title = { Text("Customer Center", fontWeight = FontWeight.Bold, color = Color.White) },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = Color.White)
                     }
                 },
                 actions = {
-                    IconButton(onClick = {}) {
-                        Icon(Icons.Default.Notifications, contentDescription = "Notifications")
+                    IconButton(onClick = {navController.navigate(ROUT_SCAFFOLD)}) {
+                        Icon(Icons.Default.Notifications, contentDescription = "Notifications", tint = Color.White)
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.background,
-                    titleContentColor = MaterialTheme.colorScheme.primary,
+                    containerColor = MaterialTheme.colorScheme.primary,
                 )
             )
         }
-    ) { padding ->
-        Column(
+    )
+    //End of Scaffold
+
+    { padding ->
+        Box(
             modifier = Modifier
                 .fillMaxSize()
+                .background(
+                    Brush.verticalGradient(
+                        colors = listOf(
+                            MaterialTheme.colorScheme.primary,
+                            MaterialTheme.colorScheme.background
+                        )
+                    )
+                )
                 .padding(padding)
         ) {
-            Text(
-                text = "How can we help you today?",
-                style = MaterialTheme.typography.headlineSmall,
-                modifier = Modifier.padding(horizontal = 20.dp, vertical = 12.dp),
-                fontWeight = FontWeight.Bold
-            )
-            
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(1),
-                contentPadding = PaddingValues(16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp),
+            Column(
                 modifier = Modifier.fillMaxSize()
             ) {
-                items(actions) { action ->
-                    IntentActionCard(action)
+                Text(
+                    text = "How can we help you?",
+                    style = MaterialTheme.typography.headlineMedium,
+                    modifier = Modifier.padding(horizontal = 24.dp, vertical = 24.dp),
+                    fontWeight = FontWeight.ExtraBold,
+                    color = Color.White
+                )
+                
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(1),
+                    contentPadding = PaddingValues(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    items(actions) { action ->
+                        IntentActionCard(action)
+                    }
                 }
             }
         }
@@ -182,7 +217,7 @@ data class IntentAction(
     val title: String,
     val description: String,
     val icon: ImageVector,
-    val color: androidx.compose.ui.graphics.Color,
+    val color: Color,
     val onClick: () -> Unit
 )
 
@@ -191,47 +226,49 @@ fun IntentActionCard(action: IntentAction) {
     ElevatedCard(
         onClick = action.onClick,
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(24.dp),
+        shape = RoundedCornerShape(28.dp),
         colors = CardDefaults.elevatedCardColors(
-            containerColor = MaterialTheme.colorScheme.surface
+            containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.9f)
         ),
-        elevation = CardDefaults.elevatedCardElevation(4.dp)
+        elevation = CardDefaults.elevatedCardElevation(defaultElevation = 6.dp)
     ) {
         Row(
             modifier = Modifier
-                .padding(20.dp)
+                .padding(24.dp)
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Surface(
-                modifier = Modifier.size(60.dp),
+                modifier = Modifier.size(64.dp),
                 shape = CircleShape,
-                color = action.color.copy(alpha = 0.12f)
+                color = action.color.copy(alpha = 0.15f)
             ) {
                 Icon(
                     imageVector = action.icon,
                     contentDescription = null,
                     modifier = Modifier
                         .padding(16.dp)
-                        .size(28.dp),
+                        .size(32.dp),
                     tint = action.color
                 )
             }
 
             Column(
                 modifier = Modifier
-                    .padding(start = 20.dp)
+                    .padding(start = 24.dp)
                     .weight(1f)
             ) {
                 Text(
                     text = action.title,
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.ExtraBold,
+                    color = MaterialTheme.colorScheme.onSurface
                 )
                 Text(
                     text = action.description,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    fontWeight = FontWeight.Medium
                 )
             }
         }
