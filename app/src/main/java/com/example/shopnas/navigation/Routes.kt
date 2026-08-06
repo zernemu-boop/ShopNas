@@ -14,3 +14,14 @@ const val ROUT_DASHBOARD = "dashboard"
 const val ROUT_INTENT = "intent"
 
 const val ROUT_SCAFFOLD = "scaffold"
+
+// Order Screen Routes
+const val ROUT_UPLOAD_ORDER= "upload order"
+
+const val ROUT_VIEW_ORDER= "view order"
+
+const val ROUTE_ADD_PRODUCT = "add product"
+
+const val ROUTE_VIEW_PRODUCTS = "view products"
+
+const val ROUTE_UPDATE_PRODUCT = "update_product/{productId}"

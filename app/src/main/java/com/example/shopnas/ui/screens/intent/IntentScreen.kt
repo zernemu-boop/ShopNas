@@ -55,6 +55,7 @@ import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.shopnas.navigation.ROUT_DASHBOARD
 import com.example.shopnas.navigation.ROUT_SCAFFOLD
 import com.example.shopnas.ui.theme.ShopNasTheme
 

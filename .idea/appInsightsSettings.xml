@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.example.shopnas" />
+                  <option name="mobileSdkAppId" value="1:470035685448:android:763b865df972d8fbb1787d" />
+                  <option name="projectId" value="shopnas" />
+                  <option name="projectNumber" value="470035685448" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

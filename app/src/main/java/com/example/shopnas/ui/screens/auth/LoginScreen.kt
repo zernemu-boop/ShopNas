@@ -36,6 +36,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -43,15 +44,20 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.shopnas.R
+import com.example.shopnas.data.AuthViewModel
 import com.example.shopnas.navigation.ROUT_HOME
 import com.example.shopnas.navigation.ROUT_ONBOARDING2
 import com.example.shopnas.navigation.ROUT_REGISTER
 
 @Composable
-fun LoginScreen(navController: NavController){
+fun LoginScreen(
+    navController: NavController,
+    authViewModel: AuthViewModel? = if (LocalInspectionMode.current) null else AuthViewModel(navController, LocalContext.current)
+){
 
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -146,7 +152,7 @@ fun LoginScreen(navController: NavController){
                     Spacer(modifier = Modifier.height(32.dp))
 
                     Button(
-                        onClick = { navController.navigate(ROUT_HOME)},
+                        onClick = { authViewModel?.login(email,password) },
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(56.dp),

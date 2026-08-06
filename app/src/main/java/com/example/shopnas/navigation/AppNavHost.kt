@@ -14,6 +14,8 @@ import com.example.shopnas.ui.screens.intent.IntentScreen
 import com.example.shopnas.ui.screens.onboarding.OnboardingScreen1
 import com.example.shopnas.ui.screens.onboarding.OnboardingScreen2
 import com.example.shopnas.ui.screens.onboarding.OnboardingScreen3
+import com.example.shopnas.ui.screens.orders.OrderUploadScreen
+import com.example.shopnas.ui.screens.orders.ViewOrdersScreen
 import com.example.shopnas.ui.screens.scaffold.ScaffoldScreen
 import com.example.shopnas.ui.screens.splash.SplashScreen
 
@@ -68,6 +70,14 @@ fun AppNavHost(
 
         composable(ROUT_SCAFFOLD) {
             ScaffoldScreen(navController)
+        }
+
+        composable(ROUT_VIEW_ORDER) {
+            ViewOrdersScreen(navController)
+        }
+
+        composable(ROUT_UPLOAD_ORDER) {
+            OrderUploadScreen(navController)
         }
 
 

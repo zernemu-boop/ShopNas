@@ -1,6 +1,7 @@
 package com.example.shopnas.ui.screens.dashboard
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -49,6 +50,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.shopnas.navigation.ROUT_INTENT
+import com.example.shopnas.navigation.ROUT_VIEW_ORDER
+import com.example.shopnas.ui.components.BottomNavigationBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -58,7 +61,7 @@ fun DashboardScreen(navController: NavController){
             TopAppBar(
                 title = { Text(text = "Profile", fontWeight = FontWeight.Bold, color = Color.White) },
                 actions = {
-                    IconButton(onClick = {}) {
+                    IconButton(onClick = { navController.navigate(ROUT_INTENT) }) {
                         Icon(Icons.Default.Settings, contentDescription = "Settings", tint = Color.White)
                     }
                 },
@@ -66,6 +69,9 @@ fun DashboardScreen(navController: NavController){
                     containerColor = MaterialTheme.colorScheme.primary
                 )
             )
+        },
+        bottomBar = {
+            BottomNavigationBar(navController = navController, selectedIndex = 3)
         }
     ) { padding ->
         Column(
@@ -95,7 +101,7 @@ fun DashboardScreen(navController: NavController){
             Spacer(modifier = Modifier.height(24.dp))
 
             // Stats Row
-            StatsSection()
+            StatsSection(navController)
 
             Spacer(modifier = Modifier.height(32.dp))
 
@@ -110,10 +116,30 @@ fun DashboardScreen(navController: NavController){
             Spacer(modifier = Modifier.height(16.dp))
             
             Column(modifier = Modifier.padding(horizontal = 24.dp)) {
-                ActivityItem(icon = Icons.Default.History, title = "Order History", subtitle = "Check your past orders")
-                ActivityItem(icon = Icons.Default.Favorite, title = "My Wishlist", subtitle = "Items you've liked")
-                ActivityItem(icon = Icons.Default.CardGiftcard, title = "Coupons", subtitle = "Manage your discount codes")
-                ActivityItem(icon = Icons.Default.Person, title = "Edit Profile", subtitle = "Change your personal details")
+                ActivityItem(
+                    icon = Icons.Default.History, 
+                    title = "Order History", 
+                    subtitle = "Check your past orders",
+                    onClick = { navController.navigate(ROUT_VIEW_ORDER) }
+                )
+                ActivityItem(
+                    icon = Icons.Default.Favorite, 
+                    title = "My Wishlist", 
+                    subtitle = "Items you've liked",
+                    onClick = { /* Placeholder for wishlist */ }
+                )
+                ActivityItem(
+                    icon = Icons.Default.CardGiftcard, 
+                    title = "Coupons", 
+                    subtitle = "Manage your discount codes",
+                    onClick = { /* Placeholder for coupons */ }
+                )
+                ActivityItem(
+                    icon = Icons.Default.Person, 
+                    title = "Edit Profile", 
+                    subtitle = "Change your personal details",
+                    onClick = { navController.navigate(ROUT_INTENT) }
+                )
             }
 
             Spacer(modifier = Modifier.height(32.dp))
@@ -191,23 +217,29 @@ fun ProfileHeaderSection() {
 }
 
 @Composable
-fun StatsSection() {
+fun StatsSection(navController: NavController) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 24.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        StatCard("Orders", "12", MaterialTheme.colorScheme.primaryContainer, Modifier.weight(1f))
-        StatCard("Wishlist", "45", MaterialTheme.colorScheme.secondaryContainer, Modifier.weight(1f))
-        StatCard("Coupons", "3", MaterialTheme.colorScheme.tertiaryContainer, Modifier.weight(1f))
+        StatCard("Orders", "12", MaterialTheme.colorScheme.primaryContainer, Modifier.weight(1f)) {
+            navController.navigate(ROUT_VIEW_ORDER)
+        }
+        StatCard("Wishlist", "45", MaterialTheme.colorScheme.secondaryContainer, Modifier.weight(1f)) {
+            // navController.navigate(ROUT_WISHLIST)
+        }
+        StatCard("Coupons", "3", MaterialTheme.colorScheme.tertiaryContainer, Modifier.weight(1f)) {
+            // navController.navigate(ROUT_COUPONS)
+        }
     }
 }
 
 @Composable
-fun StatCard(label: String, value: String, bgColor: Color, modifier: Modifier = Modifier) {
+fun StatCard(label: String, value: String, bgColor: Color, modifier: Modifier = Modifier, onClick: () -> Unit = {}) {
     Card(
-        modifier = modifier,
+        modifier = modifier.clickable { onClick() },
         shape = RoundedCornerShape(20.dp),
         colors = CardDefaults.cardColors(containerColor = bgColor),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
@@ -232,12 +264,13 @@ fun StatCard(label: String, value: String, bgColor: Color, modifier: Modifier = 
 }
 
 @Composable
-fun ActivityItem(icon: ImageVector, title: String, subtitle: String) {
+fun ActivityItem(icon: ImageVector, title: String, subtitle: String, onClick: () -> Unit = {}) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp)
-            .clip(RoundedCornerShape(20.dp)),
+            .clip(RoundedCornerShape(20.dp))
+            .clickable { onClick() },
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {

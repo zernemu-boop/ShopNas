@@ -1,5 +1,6 @@
 package com.example.shopnas.ui.screens.home
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -21,6 +22,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Notifications
@@ -41,12 +43,17 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -55,6 +62,11 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.shopnas.R
+import com.example.shopnas.navigation.ROUT_DASHBOARD
+import com.example.shopnas.navigation.ROUT_SCAFFOLD
+import com.example.shopnas.navigation.ROUT_UPLOAD_ORDER
+import com.example.shopnas.navigation.ROUT_VIEW_ORDER
+import com.example.shopnas.ui.components.BottomNavigationBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -66,15 +78,15 @@ fun HomeScreen(navController: NavController){
             TopAppBar(
                 title = { Text(text = "ShopNas", fontWeight = FontWeight.Bold) },
                 navigationIcon = {
-                    IconButton(onClick = {}) {
+                    IconButton(onClick = { navController.navigate(ROUT_DASHBOARD) }) {
                         Icon(Icons.Default.Menu, contentDescription = "Menu")
                     }
                 },
                 actions = {
-                    IconButton(onClick = {}) {
+                    IconButton(onClick = { navController.navigate(ROUT_VIEW_ORDER) }) {
                         Icon(Icons.Default.ShoppingCart, contentDescription = "Cart")
                     }
-                    IconButton(onClick = {}) {
+                    IconButton(onClick = { navController.navigate(ROUT_SCAFFOLD) }) {
                         Icon(Icons.Default.Notifications, contentDescription = "Notifications")
                     }
                 },
@@ -83,6 +95,9 @@ fun HomeScreen(navController: NavController){
                     titleContentColor = MaterialTheme.colorScheme.primary
                 )
             )
+        },
+        bottomBar = {
+            BottomNavigationBar(navController = navController, selectedIndex = 0)
         }
     ) { padding ->
         Column(
@@ -95,7 +110,7 @@ fun HomeScreen(navController: NavController){
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            CategoriesSection()
+            CategoriesSection(navController)
 
             Spacer(modifier = Modifier.height(24.dp))
 
@@ -103,9 +118,9 @@ fun HomeScreen(navController: NavController){
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            SectionHeader(title = "Trending Products")
+            SectionHeader(title = "Trending Products", onSeeAllClick = { navController.navigate(ROUT_UPLOAD_ORDER) })
             
-            TrendingGrid()
+            TrendingGrid(navController)
 
             Spacer(modifier = Modifier.height(16.dp))
         }
@@ -134,7 +149,7 @@ fun SearchBarSection() {
 }
 
 @Composable
-fun CategoriesSection() {
+fun CategoriesSection(navController: NavController) {
     val categories = listOf(
         "Electronics" to MaterialTheme.colorScheme.primaryContainer,
         "Fashion" to MaterialTheme.colorScheme.secondaryContainer,
@@ -144,24 +159,26 @@ fun CategoriesSection() {
     )
 
     Column {
-        SectionHeader(title = "Categories")
+        SectionHeader(title = "Categories", onSeeAllClick = { navController.navigate(ROUT_UPLOAD_ORDER) })
         LazyRow(
             contentPadding = PaddingValues(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             items(categories) { category ->
-                CategoryChip(category.first, category.second)
+                CategoryChip(category.first, category.second) {
+                    navController.navigate(ROUT_UPLOAD_ORDER)
+                }
             }
         }
     }
 }
 
 @Composable
-fun CategoryChip(name: String, bgColor: Color) {
+fun CategoryChip(name: String, bgColor: Color, onClick: () -> Unit) {
     Surface(
         color = bgColor,
         shape = RoundedCornerShape(12.dp),
-        modifier = Modifier.clickable { }
+        modifier = Modifier.clickable { onClick() }
     ) {
         Text(
             text = name,
@@ -218,7 +235,7 @@ fun PromoBanner() {
 }
 
 @Composable
-fun SectionHeader(title: String) {
+fun SectionHeader(title: String, onSeeAllClick: () -> Unit = {}) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -236,13 +253,14 @@ fun SectionHeader(title: String) {
             text = "See All",
             style = MaterialTheme.typography.labelLarge,
             color = MaterialTheme.colorScheme.primary,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.clickable { onSeeAllClick() }
         )
     }
 }
 
 @Composable
-fun TrendingGrid() {
+fun TrendingGrid(navController: NavController) {
     val products = listOf(
         Product("Smart Watch S8", "$199", R.drawable.img_1, 4.8),
         Product("Premium Headphones", "$299", R.drawable.img_2, 4.9),
@@ -257,7 +275,11 @@ fun TrendingGrid() {
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 pair.forEach { product ->
-                    ProductCard(product, modifier = Modifier.weight(1f))
+                    ProductCard(
+                        product = product,
+                        modifier = Modifier.weight(1f),
+                        onClick = { navController.navigate(ROUT_UPLOAD_ORDER) }
+                    )
                 }
             }
             Spacer(modifier = Modifier.height(16.dp))
@@ -268,9 +290,12 @@ fun TrendingGrid() {
 data class Product(val name: String, val price: String, val imageRes: Int, val rating: Double)
 
 @Composable
-fun ProductCard(product: Product, modifier: Modifier = Modifier) {
+fun ProductCard(product: Product, modifier: Modifier = Modifier, onClick: () -> Unit = {}) {
+    val context = LocalContext.current
+    var isFavorite by remember { mutableStateOf(false) }
+
     Card(
-        modifier = modifier,
+        modifier = modifier.clickable { onClick() },
         shape = RoundedCornerShape(24.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp)
@@ -287,7 +312,11 @@ fun ProductCard(product: Product, modifier: Modifier = Modifier) {
                     contentScale = ContentScale.Crop
                 )
                 IconButton(
-                    onClick = {},
+                    onClick = { 
+                        isFavorite = !isFavorite
+                        val message = if (isFavorite) "Added to favorites" else "Removed from favorites"
+                        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+                    },
                     modifier = Modifier
                         .align(Alignment.TopEnd)
                         .padding(12.dp)
@@ -295,10 +324,10 @@ fun ProductCard(product: Product, modifier: Modifier = Modifier) {
                         .background(Color.White.copy(alpha = 0.6f), CircleShape)
                 ) {
                     Icon(
-                        Icons.Default.FavoriteBorder,
+                        if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
                         contentDescription = null,
                         modifier = Modifier.size(20.dp),
-                        tint = MaterialTheme.colorScheme.secondary
+                        tint = if (isFavorite) Color.Red else MaterialTheme.colorScheme.secondary
                     )
                 }
             }

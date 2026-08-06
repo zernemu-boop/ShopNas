@@ -1,0 +1,19 @@
+- [x] Setup Shared Components
+    - [x] Create `BottomNavBar.kt`
+- [x] Refine Navigation
+    - [x] Update `AppNavHost.kt` routes and imports
+- [x] Fix Auth Flow
+    - [x] Update `AuthViewModel.signup` to navigate to Login
+- [x] Connect Home Screen
+    - [x] Add `BottomNavigationBar`
+    - [x] Connect TopAppBar actions
+    - [x] Make `ProductCard` and "See All" clickable
+- [x] Connect Dashboard Screen
+    - [x] Add `BottomNavigationBar`
+    - [x] Connect TopAppBar settings
+    - [x] Connect Stats cards
+- [x] Connect Order Screens
+    - [x] Update `OrderUploadScreen` with `BottomNavigationBar` and back button
+    - [x] Update `ViewOrdersScreen` with `BottomNavigationBar` and FAB
+- [x] Final Verification
+    - [x] Build and verify all screens render correctly

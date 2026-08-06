@@ -38,6 +38,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -46,15 +47,20 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.shopnas.R
+import com.example.shopnas.data.AuthViewModel
 import com.example.shopnas.navigation.ROUT_INTENT
 import com.example.shopnas.navigation.ROUT_LOGIN
 import com.example.shopnas.navigation.ROUT_ONBOARDING2
 
 @Composable
-fun RegisterScreen(navController: NavController){
+fun RegisterScreen(
+    navController: NavController,
+    authViewModel: AuthViewModel? = if (LocalInspectionMode.current) null else AuthViewModel(navController, LocalContext.current)
+){
 
     var username by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
@@ -185,7 +191,7 @@ fun RegisterScreen(navController: NavController){
                     Spacer(modifier = Modifier.height(32.dp))
 
                     Button(
-                        onClick = { navController.navigate(ROUT_INTENT)},
+                        onClick = { authViewModel?.signup(username, email, password, confirmpassword) },
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(56.dp),

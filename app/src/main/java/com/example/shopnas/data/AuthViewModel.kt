@@ -6,7 +6,10 @@ import androidx.navigation.NavController
 import com.example.shopnas.models.User
 import com.example.shopnas.navigation.ROUT_DASHBOARD
 import com.example.shopnas.navigation.ROUT_HOME
+import com.example.shopnas.navigation.ROUT_LOGIN
 import com.example.shopnas.navigation.ROUT_REGISTER
+import com.example.shopnas.navigation.ROUT_UPLOAD_ORDER
+import com.example.shopnas.navigation.ROUT_VIEW_ORDER
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
@@ -44,6 +47,7 @@ class AuthViewModel(var navController: NavController, var context: Context){
 
                         if (result.isSuccessful){
                             Toast.makeText(context, "Registered Successfully", Toast.LENGTH_LONG).show()
+                            navController.navigate(ROUT_LOGIN)
                         } else {
                             Toast.makeText(context, "${result.exception!!.message}", Toast.LENGTH_LONG).show()
                             navController.navigate(ROUT_REGISTER)
@@ -81,9 +85,8 @@ class AuthViewModel(var navController: NavController, var context: Context){
                         Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show()
 
                         if (role == "admin") {
-                            navController.navigate(ROUT_DASHBOARD)   // <-- change to your actual route
+                            navController.navigate(ROUT_VIEW_ORDER)   // <-- change to your actual route
                         }
-
 
                         else {
                             navController.navigate(ROUT_HOME)
