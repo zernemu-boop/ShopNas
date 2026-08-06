@@ -4,6 +4,7 @@ import android.content.Context
 import android.widget.Toast
 import androidx.navigation.NavController
 import com.example.shopnas.models.User
+import com.example.shopnas.navigation.ROUTE_ADD_PRODUCT
 import com.example.shopnas.navigation.ROUT_DASHBOARD
 import com.example.shopnas.navigation.ROUT_HOME
 import com.example.shopnas.navigation.ROUT_LOGIN
@@ -85,7 +86,7 @@ class AuthViewModel(var navController: NavController, var context: Context){
                         Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show()
 
                         if (role == "admin") {
-                            navController.navigate(ROUT_VIEW_ORDER)   // <-- change to your actual route
+                            navController.navigate(ROUTE_ADD_PRODUCT)   // <-- change to your actual route
                         }
 
                         else {

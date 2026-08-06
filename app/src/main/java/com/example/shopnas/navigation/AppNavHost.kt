@@ -3,9 +3,11 @@ package com.example.shopnas.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.shopnas.ui.screens.auth.LoginScreen
 import com.example.shopnas.ui.screens.auth.RegisterScreen
 import com.example.shopnas.ui.screens.dashboard.DashboardScreen
@@ -16,6 +18,9 @@ import com.example.shopnas.ui.screens.onboarding.OnboardingScreen2
 import com.example.shopnas.ui.screens.onboarding.OnboardingScreen3
 import com.example.shopnas.ui.screens.orders.OrderUploadScreen
 import com.example.shopnas.ui.screens.orders.ViewOrdersScreen
+import com.example.shopnas.ui.screens.products.AddProductScreen
+import com.example.shopnas.ui.screens.products.UpdateProductScreen
+import com.example.shopnas.ui.screens.products.ViewProductScreen
 import com.example.shopnas.ui.screens.scaffold.ScaffoldScreen
 import com.example.shopnas.ui.screens.splash.SplashScreen
 
@@ -80,7 +85,17 @@ fun AppNavHost(
             OrderUploadScreen(navController)
         }
 
+        composable(ROUTE_ADD_PRODUCT) { AddProductScreen(navController) }
 
+        composable(ROUTE_VIEW_PRODUCTS) { ViewProductScreen(navController) }
+
+        composable(
+            ROUTE_UPDATE_PRODUCT,
+            arguments = listOf(navArgument("productId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val productId = backStackEntry.arguments?.getString("productId")!!
+            UpdateProductScreen(navController, productId)
+        }
 
     }
 }
